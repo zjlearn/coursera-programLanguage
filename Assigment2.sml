@@ -23,13 +23,10 @@ fun  all_except_option(str:string, strlist: string list)=
 	(false, _ )=> NONE
       | (true, re) =>SOME(re) 
   end
-
-val test10 = all_except_option("string", ["string"])
-val test11= all_except_option("string", ["string","test"])
-val test12= all_except_option("string", ["test"])		     
+	     
 
 (*  this function return  the list that contain all string except s0*)
-fun get_substitutions1(strlistlist: string list list , s: string)=
+fun get_substitutions1(strlistlist: string list list, s: string)=
   case strlistlist of
       [] => []
     | head:: tail => 
@@ -40,8 +37,6 @@ fun get_substitutions1(strlistlist: string list list , s: string)=
 		| _  =>  get_substitutions1(tail,s)
       end
 
-
-val test20 = get_substitutions1([["fred","fredrick"],["betty"],["fred"]],"fred");
  
 
 (*tail recursive version of get_substitution  *)
@@ -61,8 +56,6 @@ fun get_substitutions2(strlistlist: string list list, s:string )=
   end
 
 
-val test31 = get_substitutions2([["fred","fredrick"],["betty"],["fred"]],"fred")
-
 (* through substitution to get similar names *)
 fun similar_names(strlistlist: string list list , full_name : {first:string, middle:string, last:string} )=
   let 
@@ -76,12 +69,6 @@ fun similar_names(strlistlist: string list list , full_name : {first:string, mid
   in
        full_name::partResult
   end
-
-
-val test41= similar_names([["Fred","Fredrick"],["Elizabeth","Betty"],["Freddie","Fred","F"]],
-{first="Fred", middle="W", last="Smith"})
-
-
 
 
 (*-------------------the second problem for a  solitaire card game*)
@@ -108,8 +95,6 @@ fun card_color(s:suit, r:rank )=
    |  Spades => Black
    | _ => Red 
 
-val test51= card_color(Clubs,Num 2);
-
 
 (* card value*)
 fun card_value(s:suit, r:rank)=
@@ -118,7 +103,6 @@ fun card_value(s:suit, r:rank)=
    | Ace  => 11
    | _  => 10
 
- val test6 = card_value (Clubs, Num 2) = 2
 
 (* remove card*)
 fun remove_card(cs: card list, c: card, e)=
@@ -130,20 +114,12 @@ fun remove_card(cs: card list, c: card, e)=
 in 
     helper(cs, false, [])
 end
-
-val test7 = remove_card ([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
 									    
-
-
 fun all_same_color(cs : card list)= (*card list => bool*)
   case cs of [] => true  (*no element in the list*)
 	  |  c1::c2::tail=> 
 	     if card_color(c1)=card_color(c2) then all_same_color(c2::tail) else false
 	     | _  => true  (*one element in the list *) 
-
-
-
-val test8 = all_same_color [(Hearts, Ace), (Hearts, Ace)] = true
 
 
 
@@ -157,20 +133,18 @@ fun sum_cards(cs: card list)=
  end
 
 
-val test9 = sum_cards [(Clubs, Num 2),(Clubs, Num 2)] = 4
-
 
 fun score(cs :card list, goal: int)=
   let 
       val sum= sum_cards(cs);
-      val pre_sum = if sum > goal then (sum-goal)*(sum-goal)*(sum-goal) else goal -sum
+      val pre_sum = if sum > goal then (sum-goal)*3 else goal -sum
   in
     if all_same_color(cs)  then pre_sum div 2
     else
 	pre_sum
   end
 
-val test10 = score ([(Hearts, Num 2),(Clubs, Num 4)],10) = 4
+
 
 fun officiate(cs :card list, movelist: move list, goal: int  )=
   let fun helper(held_cards: card list, movelist: move list, remain: card list )=
@@ -185,16 +159,4 @@ fun officiate(cs :card list, movelist: move list, goal: int  )=
       helper([], movelist, cs)
   end
 
-val test11 = officiate ([(Hearts, Num 2),(Clubs, Num 4)],[Draw], 15) = 6
 
-val test12 = officiate ([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
-                        [Draw,Draw,Draw,Draw,Draw],
-                        42)
-
-val test14=score([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],42)
-val test13 = ((officiate([(Clubs,Jack),(Spades,Num(8))],
-                         [Draw,Discard(Hearts,Jack)],
-                         42);
-               false) 
-              handle IllegalMove => true)
-             
