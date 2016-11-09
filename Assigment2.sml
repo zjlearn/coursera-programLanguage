@@ -24,14 +24,23 @@ fun  all_except_option(str:string, strlist: string list)=
       | (true, re) =>SOME(re) 
   end
 	     
-
+(*
+fun all_except_option (s,xs) =
+  case xs of
+      [] => NONE
+    | x::xs' => if same_string(s,x)
+                then SOME xs'
+                else case all_except_option(s,xs') of
+                         NONE => NONE
+                       | SOME y => SOME(x::y)
+*)
 (*  this function return  the list that contain all string except s0*)
 fun get_substitutions1(strlistlist: string list list, s: string)=
   case strlistlist of
       [] => []
     | head:: tail => 
       let 
-	  val t= all_except_option(s, head);
+	  val t= all_except_option(s, head);  (*local var is not need *)
       in
 	 case t of SOME(te) =>  te@get_substitutions1(tail,s)
 		| _  =>  get_substitutions1(tail,s)
@@ -114,6 +123,25 @@ fun remove_card(cs: card list, c: card, e)=
 in 
     helper(cs, false, [])
 end
+
+(* two sample solution
+fun remove_card (cs,c,e) =
+    case cs of
+	      [] => raise e
+      | x::cs' => if x = c then cs' else x :: remove_card(cs',c,e)
+
+fun remove_card (cs,c,e) =
+    let	fun f cs =
+	          case cs of
+		            [] => raise e
+	           | x::cs' => if x = c then cs' else x :: f cs'
+    in
+        f cs
+    end
+
+
+*)
+
 									    
 fun all_same_color(cs : card list)= (*card list => bool*)
   case cs of [] => true  (*no element in the list*)
