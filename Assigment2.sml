@@ -124,6 +124,17 @@ in
     helper(cs, false, [])
 end
 
+(*
+fun remove_card(cs, c, ex) =
+  let fun build_cards(cs, acc) =
+	case cs of
+	    [] => raise ex
+	 |  c'::cs' => if c = c' then acc @ cs' else build_cards(cs', c'::acc)
+  in
+      build_cards(cs, [])
+  end
+*)
+
 (* two sample solution
 fun remove_card (cs,c,e) =
     case cs of
@@ -138,15 +149,13 @@ fun remove_card (cs,c,e) =
     in
         f cs
     end
-
-
 *)
 
 									    
 fun all_same_color(cs : card list)= (*card list => bool*)
   case cs of [] => true  (*no element in the list*)
 	  |  c1::c2::tail=> 
-	     if card_color(c1)=card_color(c2) then all_same_color(c2::tail) else false
+	      card_color(c1)=card_color(c2) andalso all_same_color(c2::tail)
 	     | _  => true  (*one element in the list *) 
 
 
