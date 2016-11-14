@@ -5,7 +5,7 @@
 
 val test1 = only_capitals ["A","B","C"] = ["A","B","C"]
 
-val test2 = longest_string1 ["A","bc","C"] = "bc"
+val test2 = longest_string1 ["A","b","C"]
 
 val test3 = longest_string2 ["A","bc","C"] = "bc"
 
